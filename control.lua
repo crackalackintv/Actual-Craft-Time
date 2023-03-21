@@ -42,9 +42,6 @@ local function getLocalisedName(name)
 	if game.item_prototypes[name] then
 		return game.item_prototypes[name].localised_name
 	end
-	if game.virtual_signal_prototypes[name] then
-		return game.virtual_signal_prototypes[name].localised_name
-	end
 	return name
 end
 
@@ -166,47 +163,6 @@ local function copyProductsForWriteControl(recipe)
   return products
 end
 
-local function injectEverythingSignal(ingredientOrProductTable, playerName, recipeName)
-
-	-- only one item/fluid ingredient/product, no need to compute further
-	if (1 >= #ingredientOrProductTable) then
-		return ingredientOrProductTable
-	end
-
-	local uniqueItems = 0
-	for k,ingredientOrProduct in pairs(ingredientOrProductTable) do
-		if ingredientOrProduct.type == "item" then
-			uniqueItems = uniqueItems + 1
-		end
-	end
-
-	-- only one item ingredient/product, summing that makes no sense
-	if (1 >= uniqueItems) then
-		return ingredientOrProductTable
-	end
-
-	local everything = {
-		name = "signal-everything",
-		localised_name = getLocalisedName("signal-everything"),
-		ips = 0
-	}
-
-	-- sum up the IPS of all the item ingredients/products
-	for k,ingredientOrProduct in pairs(ingredientOrProductTable) do
-		if ingredientOrProduct.type == "item" then
-			everything.ips = everything.ips + ingredientOrProduct.ips
-		end
-	end
-
-	-- then color the bar for the everything signal accordingly
-	everything.pbar = pbarTraits(everything.ips * global.ACT_slider[playerName][recipeName].value, playerName)
-
-	-- insert the everything signal under the last item but above any fluids
-	table.insert(ingredientOrProductTable, uniqueItems+1, everything)
-
-	return ingredientOrProductTable
-end
-
 local function expandIngredients(ingredients, sec, playerName, recipeName)
 	if not playerName then return {} end--hopefully this never happens
 	local ingredientTable = {}
@@ -217,7 +173,7 @@ local function expandIngredients(ingredients, sec, playerName, recipeName)
 		ingredientTable[k].ips = IPS
 		ingredientTable[k].pbar = pbarTraits(IPS * global.ACT_slider[playerName][recipeName].value, playerName)
 	end
-	return injectEverythingSignal(ingredientTable, playerName, recipeName)
+	return ingredientTable
 end
 
 local function expandProducts(products, sec, playerName, effects, recipeName)
@@ -248,7 +204,7 @@ local function expandProducts(products, sec, playerName, effects, recipeName)
 																 ips = IPS,
 																 pbar = pbarTraits(IPS * global.ACT_slider[playerName][recipeName].value, playerName)}
 	end
-	return injectEverythingSignal(productTable, playerName, recipeName)
+	return productTable
 end
 
 local function expandProductsMines(products, sec, playerName, effects, recipeName, entity)
@@ -268,7 +224,7 @@ local function expandProductsMines(products, sec, playerName, effects, recipeNam
 		productTable[k].ips = IPS
 		productTable[k].pbar = pbarTraits(IPS * global.ACT_slider[playerName][recipeName].value, playerName)
 	end
-	return injectEverythingSignal(productTable, playerName, recipeName)
+	return productTable
 end
 
 local function getEffects(entity)	
@@ -462,8 +418,6 @@ local function spriteCheck(player, spritePath)
 			return "fluid/"..spritePath
 		elseif player.gui.is_valid_sprite_path("utility/"..spritePath) then
 			return "utility/"..spritePath
-		elseif player.gui.is_valid_sprite_path("virtual-signal/"..spritePath) then
-			return "virtual-signal/"..spritePath
 		end
 	end
 	return "utility/questionmark"

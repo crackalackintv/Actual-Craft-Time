@@ -1,14 +1,21 @@
 ---------------------------------------------------------------------------------------------------
+Version: 0.5.9
+Date: 11/24/2020
+  Changes:
+    - Update for Base v1.1.
+  Bugfixes:
+    - Fixed changelog errors.
+---------------------------------------------------------------------------------------------------
 Version: 0.5.8
 Date: 10/30/2020
   Bugfixes:
-     - Fixed crash on Angels fish tank recipies by using amount_max/min
-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+    - Fixed crash on Angels fish tank recipies by using amount_max/min.
+---------------------------------------------------------------------------------------------------
 Version: 0.5.7
 Date: 10/28/2020
   Bugfixes:
-     - Correct Kovarex product calculation for U-235.
-     - Oil is now using correct mining amount.
+    - Correct Kovarex product calculation for U-235.
+    - Oil is now using correct mining amount.
 ---------------------------------------------------------------------------------------------------
 Version: 0.5.6
 Date: 09/22/2020
