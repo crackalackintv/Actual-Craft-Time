@@ -381,19 +381,24 @@ local function getRecipeFromMiningTarget(entity, playerName)
 			if sec < (1/60) then
 				is_capped = true
 			end
-			local recipe = {name = miningTarget.name,
+
+			local recipe = nil
+
+			if miningTarget.prototype.mineable_properties.products then
+				recipe = {name = miningTarget.name,
 											localised_name = miningTarget.localised_name,
 											products = expandProductsMines(miningTarget.prototype.mineable_properties.products, sec, playerName, effects, miningTarget.name, entity),
 											seconds = sec,
 											effects = effects,
 											is_capped = is_capped
 											}
-			if miningTarget.prototype.mineable_properties.fluid_amount then
-				recipe.ingredients = expandIngredients({{name = miningTarget.prototype.mineable_properties.required_fluid,
-																								 amount = miningTarget.prototype.mineable_properties.fluid_amount / 10,
-																								 type = "fluid"
-																							 }},
-																							 sec, playerName, miningTarget.name)
+				if miningTarget.prototype.mineable_properties.fluid_amount then
+					recipe.ingredients = expandIngredients({{name = miningTarget.prototype.mineable_properties.required_fluid,
+																									amount = miningTarget.prototype.mineable_properties.fluid_amount / 10,
+																									type = "fluid"
+																								}},
+																								sec, playerName, miningTarget.name)
+				end
 			end
 			return recipe
 		end
