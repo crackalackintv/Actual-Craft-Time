@@ -1,4 +1,11 @@
 ---------------------------------------------------------------------------------------------------
+Version: 0.6.0
+Date: 3/21/2023
+  Changes:
+    - New repository as original hasn't been updated
+  Bugfixes:
+    - Fixed crash when mining products is nil (e.g. pyanodon bitumen seep)
+---------------------------------------------------------------------------------------------------
 Version: 0.5.9
 Date: 11/24/2020
   Changes:
